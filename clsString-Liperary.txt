@@ -1,0 +1,496 @@
+#pragma once
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class clsString
+{
+private:
+	string _Value;
+
+public:
+
+	// here a defualt constructor for a empty object
+	clsString()
+	{
+		_Value = "";
+	}
+
+	// here a parametarized constructor it force to fill the object
+	clsString(string Value)
+	{
+		_Value = Value;
+	}
+
+	// property set
+	void SetValue(string Value)
+	{
+		_Value = Value;
+	}
+
+	// property get
+	string GetValue()
+	{
+		return _Value;
+	}
+
+	_declspec(property(get = GetValue, put = SetValue))string Value;
+
+	static short Length(string S1)
+	{
+		return S1.length();
+	};
+
+	short Length()
+	{
+		return _Value.length();
+	};
+
+	// here all the static methods are used for the exrernal use at the class level
+	static short CountWords(string S1)
+	{
+		short Counter = 0;
+		short pos = 0;
+		string delim = " ";
+		string sWord = "";
+
+		while ((pos = S1.find(delim)) != std::string::npos)
+		{
+			sWord = S1.substr(0, pos);
+
+			if (sWord != "")
+			{
+				Counter++;
+			}
+			S1.erase(0, pos + delim.length());
+
+		}
+
+		if (S1 != "")
+		{
+			Counter++;
+		}
+
+		return Counter;
+	}
+
+	// and the overloading methods they are used for the memper's object itself
+	short CountWords()
+	{
+		return CountWords(_Value);
+	}
+
+	static void PrintFirstLetterOfEachWord(string S1)
+	{
+		bool isFirstLetter = true;
+
+		cout << "\nFirst letters of this string:\n";
+
+		for (int i = 0; i < S1.length(); i++)
+		{
+			if (S1[i] != ' ' && isFirstLetter)
+			{
+				cout << S1[i] << "  ";
+			}
+
+			isFirstLetter = (S1[i] == ' ' ? true : false);
+
+		}
+
+	}
+
+	void PrintFirstLetterOfEachWord()
+	{
+		PrintFirstLetterOfEachWord(_Value);
+	}
+
+	static string UpperFirstLetterOfEachWord(string S1)
+	{
+		bool isFirstLetter = true;
+
+		for (int i = 0; i < S1.length(); i++)
+		{
+			if (S1[i] != ' ' && isFirstLetter)
+			{
+				S1[i] = toupper(S1[i]);
+			}
+
+			isFirstLetter = (S1[i] == ' ' ? true : false);
+		}
+
+		return S1;
+	}
+
+	void UpperFirstLetterOfEachWord()
+	{
+		_Value = UpperFirstLetterOfEachWord(_Value);
+	}
+
+	static string LowerFirstLetterOfEachWord(string S1)
+	{
+		bool isFirstLetter = true;
+
+		for (int i = 0; i < S1.length(); i++)
+		{
+			if (S1[i] != ' ' && isFirstLetter)
+			{
+				S1[i] = tolower(S1[i]);
+			}
+
+			isFirstLetter = (S1[i] == ' ' ? true : false);
+		}
+
+		return S1;
+	}
+
+	void LowerFirstLetterOfEachWord()
+	{
+		_Value = LowerFirstLetterOfEachWord(_Value);
+	}
+
+	static string UpperAllString(string S1)
+	{
+		for (int i = 0; i < S1.length(); i++)
+		{
+			S1[i] = toupper(S1[i]);
+		}
+
+		return S1;
+	}
+
+	void UpperAllString()
+	{
+		_Value = UpperAllString(_Value);
+	}
+
+	static string LowerAllString(string S1)
+	{
+		for (int i = 0; i < S1.length(); i++)
+		{
+			S1[i] = tolower(S1[i]);
+		}
+
+		return S1;
+	}
+
+	void LowerAllString()
+	{
+		_Value = LowerAllString(_Value);
+	}
+
+	static char InvertCharCase(char Ch1)
+	{
+		return isupper(Ch1) ? tolower(Ch1) : toupper(Ch1);
+	}
+
+	static string InvertAllLettersCase(string S1)
+	{
+		for (int i = 0; i < S1.length(); i++)
+		{
+			S1[i] = InvertCharCase(S1[i]);
+		}
+
+		return S1;
+	}
+
+	void InvertAllLettersCase()
+	{
+		_Value = InvertAllLettersCase(_Value);
+	}
+
+	static short CountSpecificLetter(string S1, char Letter, bool MatchCase = true)
+	{
+		short Counter = 0;
+
+		for (int i = 0; i < S1.length(); i++)
+		{
+			if(MatchCase)
+			{
+				if (Letter == S1[i])
+					Counter++;
+			}
+			else
+			{
+				if (tolower(S1[i]) == tolower(Letter))
+					Counter++;
+			}
+		}
+
+		return Counter;
+	}
+
+	short CountSpecificLetter(char Letter, bool MatchCase = true)
+	{
+		return CountSpecificLetter(_Value, Letter, MatchCase);
+	}
+
+	enum enWhatToCount{ CapitalLetters = 0, SmallLetters = 1, All = 2 };
+
+	static short CountLetters(string S1, enWhatToCount WhatToCount = enWhatToCount::All)
+	{
+		short Counter = 0;
+
+		for (char ch : S1)
+		{
+			if (WhatToCount == enWhatToCount::All)
+			{
+				if (isalpha(ch)) // Count only alphabetic characters
+				{
+					Counter++;
+				}
+			}
+			else if (WhatToCount == enWhatToCount::CapitalLetters && isupper(ch))
+			{
+				Counter++;
+			}
+			else if (WhatToCount == enWhatToCount::SmallLetters && islower(ch))
+			{
+				Counter++;
+			}
+		}
+
+		return Counter;
+	}
+
+	short CountLetters()
+	{
+		return CountLetters(_Value);
+	}
+
+	static short CountCapitalLetters(string S1)
+	{
+		short Counter = 0;
+
+		for (int i = 0; i < S1.length(); i++)
+		{
+			if (isupper(S1[i]))
+			{
+				//if (S1[i] != ' ')
+				Counter++;
+			}
+		}
+
+		return Counter;
+	}
+
+	short CountCapitalLetters()
+	{
+		return CountCapitalLetters(_Value);
+	}
+
+	static short CountSmallLetters(string S1)
+	{
+		short Counter = 0;
+
+		for (int i = 0; i < S1.length(); i++)
+		{
+			if (islower(S1[i]))
+			{
+				//if (S1[i] != ' ')
+				Counter++;
+			}
+		}
+
+		return Counter;
+	}
+
+	short CountSmallLetters()
+	{
+		return CountSmallLetters(_Value);
+	}
+
+	static bool isVowel(char Ch1)
+	{
+		Ch1 = tolower(Ch1);
+
+		return (Ch1 == 'a' || Ch1 == 'e' || Ch1 == 'i' || Ch1 == 'o' || Ch1 == 'u');
+	}
+
+	static short CountVowels(string S1)
+	{
+		short Counter = 0;
+
+		for (char Ch1 : S1)
+		{
+			if (isVowel(Ch1))
+			{
+				Counter++;
+			}
+		}
+
+		return Counter;
+	}
+
+	short CountVowels()
+	{
+		return CountVowels(_Value);
+	}
+
+	static vector<string> SplitString(string S1, string delim)
+	{
+		vector<string> vString;
+
+		string sWord = "";
+		short pos = 0;
+
+		while ((pos = S1.find(delim)) != std::string::npos)
+		{
+			sWord = S1.substr(0, pos);
+
+			if (sWord != "")
+			{
+				vString.push_back(sWord);
+			}
+
+			S1.erase(0, pos + delim.length());
+		}
+
+		if (S1 != "")
+		{
+			vString.push_back(S1);
+		}
+
+		return vString;
+	}
+
+	vector<string> SplitString(string delim)
+	{
+		return SplitString(_Value, delim);
+	}
+
+	static string TirmLeft(string S1)
+	{
+		for (short i = 0; i < S1.length(); i++)
+		{
+			if (S1[i] != ' ')
+			{
+				return S1.substr(i, S1.length() - i);
+
+			}
+		}
+
+		return "";
+	}
+
+	void TirmLeft()
+	{
+		_Value = TirmLeft(_Value);
+	}
+
+	string TirmRight(string S1)
+	{
+		for (short i = S1.length() - 1; i >= 0; i--)
+		{
+			if (S1[i] != ' ')
+			{
+				return S1.substr(0, i + 1);
+			}
+
+		}
+		return "";
+	}
+
+	void TirmRight()
+	{
+		_Value = TirmRight(_Value);
+	}
+
+	static string joinString(vector<string>vString, string delim)
+	{
+		string S1 = " ";
+
+		for (string& vS1 : vString)
+		{
+			S1 += vS1 + delim;
+		}
+
+		return S1.substr(0, S1.length() - delim.length());
+	}
+
+	static string joinString(string arrString[],short Length, string delim)
+	{
+		string S1 = " ";
+
+		for (short i = 0; i < Length; i++)
+		{
+			S1 += arrString[i] + delim;
+		}
+
+		return S1.substr(0, S1.length() - delim.length());
+	}
+
+	static string ReversedString(string S1,string delim)
+	{
+		vector<string>vString = SplitString(S1, delim);
+
+		string ReversedS1 = "";
+
+		vector<string>::iterator iter = vString.end() ;
+
+		while (iter != vString.begin())
+		{
+			--iter;
+			ReversedS1 += *iter + delim;
+		}
+
+		return ReversedS1.substr(0, ReversedS1.length() - delim.length());
+	}
+
+	void ReversedString()
+	{
+		_Value = ReversedString(_Value, " ");
+	}
+
+	static string ReplaceWords(string S1, string StirngToReplace, string sReplaceTo, bool MatchCase = true)
+	{
+		vector<string>vString = SplitString(S1, " ");
+
+		for (string& S : vString)
+		{
+			if (MatchCase)
+			{
+				if (S == StirngToReplace)
+				{
+					S = sReplaceTo;
+				}
+			}
+			else
+			{
+				if (LowerAllString(S) == LowerAllString(StirngToReplace))
+				{
+					S = sReplaceTo;
+				}
+			}
+		}
+
+		return joinString(vString, " ");
+	}
+
+	void ReplaceWords(string StirngToReplace, string sReplaceTo, bool MatchCase = true)
+	{
+		_Value = ReplaceWords(_Value, StirngToReplace, sReplaceTo, MatchCase);
+	}
+
+	static string RemovePauncuations(string S1)
+	{
+		string S2 = " ";
+
+		for (short i = 0; i < S1.length(); i++)
+		{
+			if (!ispunct(S1[i]))
+			{
+				S2 += S1[i];
+			}
+
+		}
+		return S2;
+	}
+
+	void RemovePauncuations()
+	{
+		_Value = RemovePauncuations(_Value);
+	}
+
+};
+
