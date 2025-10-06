@@ -4,7 +4,8 @@
 📌 **Language:** C++  
 📌 **Concepts Used:**  
 - Abstraction & Encapsulation  
-- Constructor & Copy Constructor  
+- Constructor & Copy Constructor
+- polymorphism  
 - Static Methods  
 - Function Overloading  
 - Property Getters & Setters  
